@@ -80,8 +80,8 @@
     </div>
 
     <script>
-        // Load total submission count
-        fetch("https://spo-fullstack-task.onrender.com/experience")
+        
+        fetch("https://spo-fullstack-task.onrender.com/experience/stats")
             .then(res => res.json())
             .then(data => {
                 document.getElementById("counter").innerText = `Total submissions: ${data.total}`;
@@ -90,7 +90,7 @@
                 document.getElementById("counter").innerText = "Failed to load total submissions.";
             });
 
-        // Handle form submission
+    
         document.getElementById("experienceForm").addEventListener("submit", function(e) {
             e.preventDefault();
 
@@ -116,8 +116,8 @@
             .catch(() => alert("Submission failed!"));
         });
 
-        // Load experience stats
-        fetch("https://spo-fullstack-task.onrender.com/experience/stats")
+       
+        fetch("https://spo-fullstack-task.onrender.com/experience/")
             .then(res => res.json())
             .then(data => {
                 const container = document.getElementById("experiencesContainer");
