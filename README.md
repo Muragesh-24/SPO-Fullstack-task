@@ -3,7 +3,8 @@
 This is a backend application built with Go, MongoDB, and hosted on Render. It's designed to collect and store user experiences for the SPO (Student Placement Office) Web Executive Selection process.This project is the second task for the SPO Web Executive selection.
 
 ## Live Server
-You can view the live at: [Live website](https://muragesh-24.github.io/SPO-Fullstack-task/) 
+You can view the live at: [Live website](https://muragesh-24.github.io/SPO-Fullstack-task/) <br>
+I know there should be a different page for admin , now just for testing my backend i  created a sample frontend<br> 
 You can view the live version of server: [Live Server](https://spo-fullstack-task.onrender.com) 
 
 ## Features
