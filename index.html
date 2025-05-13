@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPO-IIT Kanpur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f4f4f4;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .counter {
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            max-width: 500px;
+            margin: 0 auto 30px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .experience-list {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .experience-card {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 5px solid #007BFF;
+            border-radius: 4px;
+            box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+        }
+        .experience-card h3 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>SPO - IIT Kanpur</h1>
+    <div class="counter" id="counter">Loading total submissions...</div>
+
+    <form id="experienceForm">
+        <h2>Share Your Experience</h2>
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="text" id="company" placeholder="Company" required />
+        <input type="text" id="role" placeholder="Role" required />
+        <textarea id="selection_process" placeholder="Selection Process" required></textarea>
+        <textarea id="preparation_strategy" placeholder="Preparation Strategy" required></textarea>
+        <textarea id="tips" placeholder="Tips" required></textarea>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="experience-list" id="experienceList">
+        <h2>Submitted Experiences</h2>
+        <div id="experiencesContainer">Loading experiences...</div>
+    </div>
+
+    <script>
+        // Load total submission count
+        fetch("https://spo-fullstack-task.onrender.com/experience")
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById("counter").innerText = `Total submissions: ${data.total}`;
+            })
+            .catch(err => {
+                document.getElementById("counter").innerText = "Failed to load total submissions.";
+            });
+
+        // Handle form submission
+        document.getElementById("experienceForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const experience = {
+                name: document.getElementById("name").value,
+                company: document.getElementById("company").value,
+                role: document.getElementById("role").value,
+                selection_process: document.getElementById("selection_process").value,
+                preparation_strategy: document.getElementById("preparation_strategy").value,
+                tips: document.getElementById("tips").value,
+            };
+
+            fetch("https://spo-fullstack-task.onrender.com/experience", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(experience),
+            })
+            .then(res => res.json())
+            .then(() => {
+                alert("Experience submitted successfully!");
+                location.reload();
+            })
+            .catch(() => alert("Submission failed!"));
+        });
+
+        // Load experience stats
+        fetch("https://spo-fullstack-task.onrender.com/experience/stats")
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById("experiencesContainer");
+                container.innerHTML = "";
+
+                data.forEach(exp => {
+                    const card = document.createElement("div");
+                    card.className = "experience-card";
+                    card.innerHTML = `
+                        <h3>${exp.name} @ ${exp.company}</h3>
+                        <p><strong>Role:</strong> ${exp.role}</p>
+                        <p><strong>Selection Process:</strong> ${exp.selection_process}</p>
+                        <p><strong>Preparation Strategy:</strong> ${exp.preparation_strategy}</p>
+                        <p><strong>Tips:</strong> ${exp.tips}</p>
+                    `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(() => {
+                document.getElementById("experiencesContainer").innerText = "Failed to load experiences.";
+            });
+    </script>
+</body>
+</html>
